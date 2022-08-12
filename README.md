@@ -1,5 +1,6 @@
 # Segmentation-with-U-Net
 Python-based project performing binary segmentation on `PH2` dataset : https://www.dropbox.com/s/k88qukc20ljnbuo/PH2Dataset.rar?file_subpath=%2FPH2Dataset
+
 This project generated binary masks from dermatological samples fed into the system which are ultimately classified into three categorical divisions. 
 
 ## Project Description
@@ -29,12 +30,8 @@ Three types of classifiers are employed for fitness evaluation
 
 ## Overall Network Visualization:
 -     Roadmap
-     !![7ff5fc1c9d7e7b76a10af4ef0b6cb36f-1](https://user-images.githubusercontent.com/89198752/184345453-bb4a3d4a-c844-406b-b206-7e90fe061028.jpg)
+     ![7ff5fc1c9d7e7b76a10af4ef0b6cb36f-1](https://user-images.githubusercontent.com/89198752/184345453-bb4a3d4a-c844-406b-b206-7e90fe061028.jpg)
 
-## Classification Accuracy Plots Over Generations
-MLP classifer gives following plot of accuracy vs generations:
-Epoch-`200`
-     ![image](https://user-images.githubusercontent.com/89198752/154793637-f36ce72c-6483-4755-9d04-622327210d48.png)
 
 ## Dependencies
 Since the entire project is based on `Python` programming language, it is necessary to have Python installed in the system. It is recommended to use Python with version `>=3.9`.
@@ -42,55 +39,68 @@ The Python packages which are in use in this project are  `matplotlib`, `numpy`,
 - `pip install requirements.txt`
 
 ## Code implementation
- ### Data paths :
+ ### Data paths (overall) :
       Current directory ---->   data
                                   |
                                   |
                                   |               
-                                  ------------------>  train
-                                  |                      |
+                                  ------------------>    train
+                                  |                        |
                                   |             -------------------------
-                                  |             |        |              |
-                                  |             V        V              V
-                                  |          class 1   class 2 ..... class n
+                                  |             |                       |
+                                  |             V                       V
+                                  |           input                   target
+                                  |             |                       |
+                                  |     ------------------       ------------------
+                                  |     |                |       |                |
+                                  |     V                V       V                V
+                                  |   image_1 ....   image_n   mask_1 ....      mask_n
+                                  |
+                                  |
+                                  |
+                                  |
+                                  ------------------>     val
+                                  |                        |
+                                  |             -------------------------
+                                  |             |                       |
+                                  |             V                       V
+                                  |           input                   target
+                                  |             |                       |
+                                  |     ------------------       ------------------
+                                  |     |                |       |                |
+                                  |     V                V       V                V
+                                  |   image_1 ....   image_n   mask_1 ....      mask_n
+                                  |
+                                  |
                                   |
                                   |
                                   |              
-                                  ------------------>   val
-                                                         |
-                                                -------------------------
-                                                |        |              |
-                                                V        V              V
-                                             class 1   class 2 ..... class n
-                                              
-                               
-- Where the folders `train` and `val` contain the folders for different classes of histopathological images of respective type of breast tissue tumor in `.jpg`/`.png` format.
-
- ### Training and Evaluation :
-      usage: main.py [-h] [-data DATA_PATH] [-classes NUM_CLASSES] [-ext EXT_TYPE] [-classif CLASSIF_TYPE]
-
-      Application of Genetic Algorithm
-
-      optional arguments:
-        -h, --help            show this help message and exit
-        -data DATA_PATH, --data_path DATA_PATH
-                              Path to data
-        -classes NUM_CLASSES, --num_classes NUM_CLASSES
-                              Number of data classes
-        -ext EXT_TYPE, --ext_type EXT_TYPE
-                              Choice of extractor
-        -classif CLASSIF_TYPE, --classif_type CLASSIF_TYPE
-                              Choice of classifier for GA
-        
-  ### Run the following for training and validation :
-  
-      python main.py -data data -classes n -ext resnet -classif MLP
-      
+                                  ------------------>   train_classifier
+                                  |                           |
+                                  |                  -------------------------
+                                  |                  |        |              |
+                                  |                  V        V              V
+                                  |            gen_mask 1  gen_mask 2 ... gen_mask n
+                                  |
+                                  |
+                                  |              
+                                  ------------------>   val_classifier
+                                  |                          |
+                                  |                  -------------------------
+                                  |                  |        |              |
+                                  |                  V        V              V
+                                  |            gen_mask 1  gen_mask 2 ... gen_mask n
+                                  |
+                                  |
+                                  ------------------>    test
+                                                          |
+                                                 -------------------
+                                                 |                 |
+                                                 V                 V
+                                               image_1 ....     image_n    
+                                  
   ### Specific tokens :
 
-      GoogLeNet: 'googlenet'
-      VGG-19: 'vgg'
-      ResNet-18: 'resnet'
       SVM: 'SVM'
       MLP: 'MLP'
       KNN: 'KNN'          
